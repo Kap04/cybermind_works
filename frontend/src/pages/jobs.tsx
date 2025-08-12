@@ -56,7 +56,7 @@ export default function JobsPage() {
   }, [filters]);
 
   return (
-    <Container size="xl" py="md" style={{ background: '#f8f9fd', minHeight: '100vh' }}>
+    <Container size="2xl" py="md" style={{ background: '#ffffffff', minHeight: '100vh' }}>
       <Stack>
         <Header onCreateJob={() => setModalOpen(true)} />
         <FilterBar filters={filters} onChange={setFilters} locations={locationsList} />

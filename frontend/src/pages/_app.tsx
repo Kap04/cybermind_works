@@ -1,4 +1,5 @@
 import { MantineProvider } from '@mantine/core';
+import Head from 'next/head';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/notifications/styles.css';
@@ -8,12 +9,17 @@ import theme from '../theme/theme';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <MantineProvider
-      theme={theme}
-      defaultColorScheme="light"
-      withCssVariables
-    >
-      <Component {...pageProps} />
-    </MantineProvider>
+    <>
+      <Head>
+        <link href="https://api.fontshare.com/v2/css?f[]=satoshi@1&display=swap" rel="stylesheet" />
+      </Head>
+      <MantineProvider
+        theme={theme}
+        defaultColorScheme="light"
+        withCssVariables
+      >
+        <Component {...pageProps} />
+      </MantineProvider>
+    </>
   );
 }

@@ -11,8 +11,8 @@ export const useHeaderStyles = createStyles((theme) => ({
     border: `1px solid ${headerTheme.colors.headerBorder}`,
     boxShadow: headerTheme.shadows.header,
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'center',
-    alignItems: 'flex-start',
     marginLeft: 'auto',
     marginRight: 'auto',
   },
@@ -21,8 +21,8 @@ export const useHeaderStyles = createStyles((theme) => ({
     height: rem(48),
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: rem(26),
-    paddingTop: rem(16),
+    justifyContent: 'space-between',
+    
     gap: rem(0),
   },
   logo: {
@@ -32,6 +32,7 @@ export const useHeaderStyles = createStyles((theme) => ({
     width: 'auto',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   navItem: {
     padding: headerTheme.spacing.navItem,
@@ -40,13 +41,24 @@ export const useHeaderStyles = createStyles((theme) => ({
     fontSize: headerTheme.font.size,
     lineHeight: headerTheme.font.lineHeight,
     letterSpacing: headerTheme.font.letterSpacing,
-    color: headerTheme.colors.headerText,
+    color: '#303030',
     background: 'none',
     border: 'none',
     cursor: 'pointer',
+    textDecoration: 'none',
+    boxShadow: 'none',
+    outline: 'none',
     transition: 'color 0.2s',
     '&:hover': {
       color: headerTheme.colors.primaryTop,
+      textDecoration: 'none',
+    },
+    '&:active': {
+      textDecoration: 'none',
+    },
+    '&:focus': {
+      textDecoration: 'none',
+      outline: 'none',
     },
   },
   ctaContainer: {
@@ -57,7 +69,7 @@ export const useHeaderStyles = createStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 'auto',
+    
   },
 }));
 
@@ -65,11 +77,13 @@ export const useCreateJobButtonStyles = createStyles(() => ({
   button: {
     width: rem(123),
     height: rem(38),
-    borderRadius: headerTheme.radii.button,
+    borderRadius: '999px',
     padding: headerTheme.spacing.navItem,
-    background: 'linear-gradient(180deg, #A128FF 0%, #6100AD 113.79%)',
+    whiteSpace: 'nowrap',
+    background: 'linear-gradient(180deg, #A128FF 0%, #6100AD 100%)',
     color: headerTheme.colors.ctaText,
     fontWeight: headerTheme.font.weight,
+    fontStyle: headerTheme.font.style,
     fontFamily: headerTheme.font.family,
     fontSize: headerTheme.font.size,
     lineHeight: headerTheme.font.lineHeight,
@@ -78,6 +92,9 @@ export const useCreateJobButtonStyles = createStyles(() => ({
     boxShadow: 'none',
     cursor: 'pointer',
     transition: 'box-shadow 0.2s, transform 0.2s',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     '&:hover': {
       transform: 'translateY(-2px)',
       boxShadow: headerTheme.shadows.ctaHover,

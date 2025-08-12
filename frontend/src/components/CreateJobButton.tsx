@@ -12,7 +12,8 @@ export function CreateJobButton({ onClick }: CreateJobButtonProps) {
       className={classes.button}
       aria-label="Create Jobs"
       onClick={onClick}
-      variant="filled"
+      variant="default"
+      unstyled
       tabIndex={0}
     >
       Create Jobs

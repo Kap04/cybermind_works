@@ -24,11 +24,13 @@ export const headerTheme = {
     innerFrame: '16px 0 0 26px',
   },
   font: {
-    family: 'Satoshi Variable, Inter, sans-serif',
+    // family: 'Satoshi Variable, Inter, sans-serif',
+    family: '',
     weight: 600,
-    style: 'bold',
+    style: 'bold',  
     size: '16px',
     lineHeight: '100%',
     letterSpacing: '0%',
+    
   },
 };
