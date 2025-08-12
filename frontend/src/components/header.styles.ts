@@ -1,0 +1,90 @@
+import { createStyles, rem } from '@mantine/styles';
+import { headerTheme } from '../theme/headerTheme';
+
+export const useHeaderStyles = createStyles((theme) => ({
+  outerFrame: {
+    width: rem(890),
+    height: rem(80),
+    marginTop: rem(21),
+    borderRadius: headerTheme.radii.roundHuge,
+    background: headerTheme.colors.headerBg,
+    border: `1px solid ${headerTheme.colors.headerBorder}`,
+    boxShadow: headerTheme.shadows.header,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  innerFrame: {
+    width: rem(838),
+    height: rem(48),
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: rem(26),
+    paddingTop: rem(16),
+    gap: rem(0),
+  },
+  logo: {
+    padding: 0,
+    marginRight: rem(24),
+    height: rem(48),
+    width: 'auto',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  navItem: {
+    padding: headerTheme.spacing.navItem,
+    fontWeight: headerTheme.font.weight,
+    fontFamily: headerTheme.font.family,
+    fontSize: headerTheme.font.size,
+    lineHeight: headerTheme.font.lineHeight,
+    letterSpacing: headerTheme.font.letterSpacing,
+    color: headerTheme.colors.headerText,
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    transition: 'color 0.2s',
+    '&:hover': {
+      color: headerTheme.colors.primaryTop,
+    },
+  },
+  ctaContainer: {
+    width: rem(133),
+    height: rem(48),
+    borderRadius: headerTheme.radii.navItem,
+    padding: rem(5),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 'auto',
+  },
+}));
+
+export const useCreateJobButtonStyles = createStyles(() => ({
+  button: {
+    width: rem(123),
+    height: rem(38),
+    borderRadius: headerTheme.radii.button,
+    padding: headerTheme.spacing.navItem,
+    background: 'linear-gradient(180deg, #A128FF 0%, #6100AD 113.79%)',
+    color: headerTheme.colors.ctaText,
+    fontWeight: headerTheme.font.weight,
+    fontFamily: headerTheme.font.family,
+    fontSize: headerTheme.font.size,
+    lineHeight: headerTheme.font.lineHeight,
+    letterSpacing: headerTheme.font.letterSpacing,
+    border: 'none',
+    boxShadow: 'none',
+    cursor: 'pointer',
+    transition: 'box-shadow 0.2s, transform 0.2s',
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: headerTheme.shadows.ctaHover,
+    },
+    '&:focus': {
+      outline: 'none',
+      boxShadow: headerTheme.shadows.ctaFocus,
+    },
+  },
+}));
