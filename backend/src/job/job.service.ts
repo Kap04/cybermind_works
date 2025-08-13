@@ -10,7 +10,7 @@ export class JobService {
 
   async findAll(query: any): Promise<{ jobs: Job[]; total: number }> {
     const { title, location, jobType, salaryMin, salaryMax, page = 1, limit = 10 } = query;
-    // Build SQL using tagged template literals for Neon
+    // Build SQL using positional parameters for Neon sql.query
     let sql = 'SELECT * FROM job WHERE 1=1';
     const params: any[] = [];
     if (title) {
@@ -31,29 +31,43 @@ export class JobService {
     }
     sql += ` ORDER BY createdAt DESC LIMIT $${params.length + 1} OFFSET $${params.length + 2}`;
     params.push(limit, (page - 1) * limit);
-    let jobs = [];
+    let jobs: Job[] = [];
     let total = 0;
     try {
-      jobs = await this.databaseService.query([sql] as any, ...params);
-      const totalResult = await this.databaseService.query([
-        'SELECT COUNT(*) FROM job WHERE 1=1' +
-        (title ? ` AND jobTitle ILIKE $1` : '') +
-        (location ? ` AND location ILIKE $${title ? 2 : 1}` : '') +
-        (jobType ? ` AND jobType = $${title && location ? 3 : title || location ? 2 : 1}` : '') +
-        (salaryMin && salaryMax ? ` AND salaryMin BETWEEN $${title && location && jobType ? 4 : title && location || title && jobType || location && jobType ? 3 : title || location || jobType ? 2 : 1} AND $${title && location && jobType ? 5 : title && location || title && jobType || location && jobType ? 4 : title || location || jobType ? 3 : 2}` : '')
-      ] as any, ...[title && `%${title}%`, location && `%${location}%`, jobType, salaryMin, salaryMax].filter(Boolean));
-      total = parseInt(totalResult[0]?.count || '0', 10);
+      const jobsResult = await this.databaseService.query(sql, params);
+      jobs = jobsResult.rows as Job[];
+      // Build count query with same filters
+      let countSql = 'SELECT COUNT(*) FROM job WHERE 1=1';
+      const countParams: any[] = [];
+      if (title) {
+        countSql += ` AND jobTitle ILIKE $${countParams.length + 1}`;
+        countParams.push(`%${title}%`);
+      }
+      if (location) {
+        countSql += ` AND location ILIKE $${countParams.length + 1}`;
+        countParams.push(`%${location}%`);
+      }
+      if (jobType) {
+        countSql += ` AND jobType = $${countParams.length + 1}`;
+        countParams.push(jobType);
+      }
+      if (salaryMin && salaryMax) {
+        countSql += ` AND salaryMin BETWEEN $${countParams.length + 1} AND $${countParams.length + 2}`;
+        countParams.push(salaryMin, salaryMax);
+      }
+      const totalResult = await this.databaseService.query(countSql, countParams);
+      total = parseInt(totalResult.rows[0]?.count || '0', 10);
     } catch (error) {
       console.error('JobService.findAll error:', error);
       throw error;
     }
-    return { jobs: jobs as Job[], total };
+    return { jobs, total };
   }
 
   async findOne(id: string): Promise<Job> {
     try {
-      const result = await this.databaseService.query([`SELECT * FROM job WHERE id = $1`] as any, id);
-      const job = result[0];
+      const result = await this.databaseService.query('SELECT * FROM job WHERE id = $1', [id]);
+      const job = result.rows[0];
       if (!job) throw new NotFoundException('Job not found');
       return job as Job;
     } catch (error) {
@@ -65,24 +79,25 @@ export class JobService {
   async create(data: Partial<Job>): Promise<Job> {
     const createdAt = new Date().toISOString();
     try {
-      const result = await this.databaseService.query([
+      const result = await this.databaseService.query(
         `INSERT INTO job (jobTitle, companyName, location, jobType, salaryMin, salaryMax, jobDescription, requirements, responsibilities, applicationDeadline, logoUrl, createdAt)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`
-      ] as any,
-        data.jobTitle,
-        data.companyName,
-        data.location,
-        data.jobType,
-        data.salaryMin,
-        data.salaryMax,
-        data.jobDescription,
-        data.requirements,
-        data.responsibilities,
-        data.applicationDeadline,
-        data.logoUrl,
-        createdAt
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
+        [
+          data.jobTitle,
+          data.companyName,
+          data.location,
+          data.jobType,
+          data.salaryMin,
+          data.salaryMax,
+          data.jobDescription,
+          data.requirements,
+          data.responsibilities,
+          data.applicationDeadline,
+          data.logoUrl,
+          createdAt
+        ]
       );
-      return result[0] as Job;
+      return result.rows[0] as Job;
     } catch (error) {
       console.error('JobService.create error:', error);
       throw error;
@@ -95,11 +110,9 @@ export class JobService {
     if (keys.length === 0) return this.findOne(id);
     const setClause = keys.map((key, idx) => `${key} = $${idx + 2}`).join(', ');
     try {
-      await this.databaseService.query([
-        `UPDATE job SET ${setClause} WHERE id = $1`
-      ] as any,
-        id,
-        ...values
+      await this.databaseService.query(
+        `UPDATE job SET ${setClause} WHERE id = $1`,
+        [id, ...values]
       );
       return this.findOne(id);
     } catch (error) {

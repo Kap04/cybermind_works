@@ -12,10 +12,10 @@ export class DatabaseService {
         this.sql = neon(databaseUrl);
     }
 
-    // Public query method for tagged template literal SQL queries
-    async query(strings: TemplateStringsArray, ...values: any[]) {
+    // Public query method for Neon sql.query (string, [params])
+    async query(sql: string, params: any[] = []): Promise<any> {
         try {
-            return await this.sql(strings, ...values);
+            return await this.sql.query(sql, params);
         } catch (error) {
             console.error('DatabaseService query error:', error);
             throw error;
