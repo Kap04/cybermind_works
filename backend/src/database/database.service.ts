@@ -14,6 +14,11 @@ export class DatabaseService {
 
     // Public query method for tagged template literal SQL queries
     async query(strings: TemplateStringsArray, ...values: any[]) {
-        return this.sql(strings, ...values);
+        try {
+            return await this.sql(strings, ...values);
+        } catch (error) {
+            console.error('DatabaseService query error:', error);
+            throw error;
+        }
     }
 }
