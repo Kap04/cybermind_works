@@ -75,9 +75,9 @@ export function FilterBar({ filters, onChange, locations = [] }: FilterBarProps)
               </div>
             </div>
             <RangeSlider
-              min={1000}
-              max={100000}
-              step={1000}
+              min={0}
+              max={200000}
+              step={5000}
               value={filters.salary}
               onChange={val => onChange({ ...filters, salary: val as [number, number] })}
               label={v => `₹${v / 1000}k`}

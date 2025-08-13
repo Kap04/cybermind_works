@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Stack, SimpleGrid, Loader, Center, Text } from '@mantine/core';
+import { Container, Stack, SimpleGrid, Loader, Center, Text, px } from '@mantine/core';
 import { Header } from '../components/Header';
 import { FilterBar } from '../components/FilterBar';
 import { JobCard } from '../components/JobCard';
@@ -65,7 +65,7 @@ export default function JobsPage() {
         ) : error ? (
           <Center><Text c="red">{error}</Text></Center>
         ) : (
-          <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} spacing="xl">
+          <SimpleGrid cols={{ base: 2, sm: 3, md: 4 }} m={40} spacing="sm">
             {jobs.map((job, idx) => (
               <JobCard key={job.id || idx} job={job} />
             ))}

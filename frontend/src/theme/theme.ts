@@ -5,8 +5,11 @@ const theme: MantineThemeOverride = {
   primaryColor: 'violet',
   defaultRadius: 'md',
   headings: {
-    fontFamily: 'Satoshi Variable, Satoshi, Inter, Poppins, sans-serif',
+    fontFamily: 'Satoshi Variable',
   },
+  // :fonts {
+  //   primary: 'Satoshi Variable',
+  // },
   // Add more tokens as you finalize the design
 };
 
