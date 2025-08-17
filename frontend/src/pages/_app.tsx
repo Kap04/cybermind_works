@@ -6,6 +6,7 @@ import '@mantine/notifications/styles.css';
 import "../theme/theme";
 import type { AppProps } from 'next/app';
 import theme from '../theme/theme';
+import { Analytics } from "@vercel/analytics/next"
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -19,6 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
         withCssVariables
       >
         <Component {...pageProps} />
+        <Analytics/>
       </MantineProvider>
     </>
   );
